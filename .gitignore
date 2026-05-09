@@ -9,3 +9,33 @@
 .cxx
 local.properties
 /app/build
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Compiled files
+*.class
+bin/
+gen/
+out/
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+
+# Profiling
+*.hprof
+
+# Signing
+*.jks
+*.keystore
+
+# IDE navigation
+.navigation/
+
+# Firebase
+google-services.json
