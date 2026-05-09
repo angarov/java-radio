@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio</string>
+    <string name="app_header">Java radio 📻</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="station_image">Station image</string>
+    <string name="now_playing_image">Now playing image</string>
+    <string name="loading_stations">Loading stations…</string>
+    <string name="error_loading">Failed to load stations</string>
+    <string name="channel_name">Radio Playback</string>
+    <string name="tab_national">National</string>
+    <string name="tab_local">Local</string>
+</resources>

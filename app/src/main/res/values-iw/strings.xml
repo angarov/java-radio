@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">רדיו</string>
+    <string name="app_header">רדיו ג׳אווה 📻</string>
+    <string name="play_pause">נגן/השהה</string>
+    <string name="station_image">תמונת תחנה</string>
+    <string name="now_playing_image">תמונת השיר המתנגן</string>
+    <string name="loading_stations">טוען תחנות…</string>
+    <string name="error_loading">טעינת התחנות נכשלה</string>
+    <string name="channel_name">השמעת רדיו</string>
+    <string name="tab_national">ארצי</string>
+    <string name="tab_local">אזורי</string>
+</resources>
