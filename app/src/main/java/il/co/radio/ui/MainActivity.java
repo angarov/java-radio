@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import il.co.radio.R;
 import il.co.radio.api.ApiCallback;
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
 
         String imageUrl = station.getImageUrl();
         if (imageUrl != null) {
-            Picasso.get().load(imageUrl).into(binding.playerImage);
+            Glide.with(this).load(imageUrl).into(binding.playerImage);
         } else {
             binding.playerImage.setImageResource(R.drawable.ic_radio);
         }
@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
 
         long now = System.currentTimeMillis();
         for (EpgTrack track : epgResponse.tracks) {
+            if (track.startTime == null || track.duration == null) continue;
             try {
                 long start = Long.parseLong(track.startTime);
                 long duration = Long.parseLong(track.duration) * 1000;
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
     private void updateNowPlaying(EpgTrack track) {
         binding.playerNowPlaying.setText(track.getDisplayName());
         if (track.hasImage()) {
-            Picasso.get().load(track.image.trim()).into(binding.playerImage);
+            Glide.with(this).load(track.image.trim()).into(binding.playerImage);
         }
     }
 

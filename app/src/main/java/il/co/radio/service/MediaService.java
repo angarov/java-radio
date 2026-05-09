@@ -12,8 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MimeTypes;
 import androidx.media3.common.Player;
+import androidx.media3.datasource.DefaultDataSource;
+import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory;
 
 import il.co.radio.R;
 import il.co.radio.ui.MainActivity;
@@ -39,7 +43,19 @@ public class MediaService extends Service {
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
-        player = new ExoPlayer.Builder(this).build();
+
+        DefaultHttpDataSource.Factory httpFactory = new DefaultHttpDataSource.Factory()
+                .setUserAgent("RadioApp/1.0 (Android)")
+                .setConnectTimeoutMs(15_000)
+                .setReadTimeoutMs(15_000)
+                .setAllowCrossProtocolRedirects(true);
+
+        DefaultDataSource.Factory dataSourceFactory =
+                new DefaultDataSource.Factory(this, httpFactory);
+
+        player = new ExoPlayer.Builder(this)
+                .setMediaSourceFactory(new DefaultMediaSourceFactory(dataSourceFactory))
+                .build();
         player.addListener(new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(int state) {
@@ -76,10 +92,35 @@ public class MediaService extends Service {
 
     private void play(String streamUrl) {
         player.stop();
-        player.setMediaItem(MediaItem.fromUri(streamUrl));
+        player.setMediaItem(buildMediaItem(streamUrl));
         player.prepare();
         player.setPlayWhenReady(true);
         startForeground(NOTIFICATION_ID, buildNotification());
+    }
+
+    private MediaItem buildMediaItem(String streamUrl) {
+        String mimeType = inferMimeType(streamUrl);
+        if (mimeType != null) {
+            return new MediaItem.Builder()
+                    .setUri(streamUrl)
+                    .setMimeType(mimeType)
+                    .build();
+        }
+        return MediaItem.fromUri(streamUrl);
+    }
+
+    private String inferMimeType(String url) {
+        if (url == null) return null;
+        String path = url;
+        int q = url.indexOf('?');
+        if (q > 0) path = url.substring(0, q);
+        int f = path.indexOf('#');
+        if (f > 0) path = path.substring(0, f);
+        path = path.toLowerCase();
+        if (path.endsWith(".mp3")) return MimeTypes.AUDIO_MPEG;
+        if (path.endsWith(".aac")) return MimeTypes.AUDIO_AAC;
+        if (path.endsWith(".ogg") || path.endsWith(".oga")) return MimeTypes.AUDIO_OGG;
+        return null;
     }
 
     private void stop() {
@@ -139,8 +180,11 @@ public class MediaService extends Service {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        player.stop();
-        player.release();
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
         stopForeground(STOP_FOREGROUND_REMOVE);
         stopSelf();
     }

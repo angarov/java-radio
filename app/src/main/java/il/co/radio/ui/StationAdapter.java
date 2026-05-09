@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class StationAdapter extends RecyclerView.Adapter<StationAdapter.ViewHold
 
             String imageUrl = station.getImageUrl();
             if (imageUrl != null) {
-                Picasso.get()
+                Glide.with(binding.getRoot().getContext())
                         .load(imageUrl)
                         .placeholder(il.co.radio.R.drawable.ic_radio)
                         .error(il.co.radio.R.drawable.ic_radio)
