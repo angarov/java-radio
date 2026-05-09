@@ -132,6 +132,8 @@ public class ApiClient {
             station.maincolor = jsonArrayToList(obj.optJSONArray("maincolor"));
             station.voice = jsonArrayToList(obj.optJSONArray("voice"));
             station.info = jsonArrayToList(obj.optJSONArray("info"));
+            String streamUrl = station.getStreamUrl();
+            if (streamUrl != null && streamUrl.toLowerCase().endsWith(".mp3")) continue;
             stations.add(station);
         }
 
