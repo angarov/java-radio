@@ -41,9 +41,6 @@ public class EpgSaxHandler extends DefaultHandler {
             case "artist":
                 currentTrack.artist = textContent.toString();
                 break;
-            case "desc":
-                currentTrack.desc = textContent.toString();
-                break;
             case "image":
                 currentTrack.image = textContent.toString();
                 break;

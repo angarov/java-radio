@@ -29,7 +29,6 @@ import il.co.radio.model.StationsResponse;
 public class ApiClient {
 
     private static final String TAG = "ApiClient";
-    private static final String STATIONS_URL = "https://digital.100fm.co.il/allfm/stations/api/local";
     private static final int CONNECT_TIMEOUT = 30_000;
     private static final int READ_TIMEOUT = 30_000;
 
@@ -42,10 +41,6 @@ public class ApiClient {
             instance = new ApiClient();
         }
         return instance;
-    }
-
-    public void getStations(ApiCallback<StationsResponse> callback) {
-        getStations(STATIONS_URL, callback);
     }
 
     public void getStations(String url, ApiCallback<StationsResponse> callback) {
@@ -124,9 +119,6 @@ public class ApiClient {
             station.img = jsonArrayToList(obj.optJSONArray("img"));
             station.name = jsonArrayToList(obj.optJSONArray("name"));
             station.nowplaying = jsonArrayToList(obj.optJSONArray("nowplaying"));
-            station.maincolor = jsonArrayToList(obj.optJSONArray("maincolor"));
-            station.voice = jsonArrayToList(obj.optJSONArray("voice"));
-            station.info = jsonArrayToList(obj.optJSONArray("info"));
             String streamUrl = station.getStreamUrl();
             if (streamUrl != null && streamUrl.toLowerCase().endsWith(".mp3")) continue;
             stations.add(station);

@@ -46,7 +46,5 @@ dependencies {
     // Image loading
     implementation 'com.github.bumptech.glide:glide:5.0.7'
 
-    // Room database
-    implementation 'androidx.room:room-runtime:2.8.4'
-    annotationProcessor 'androidx.room:room-compiler:2.8.4'
+    testImplementation 'junit:junit:4.13.2'
 }

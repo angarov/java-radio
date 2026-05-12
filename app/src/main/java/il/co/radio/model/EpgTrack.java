@@ -4,7 +4,6 @@ public class EpgTrack {
 
     public String name;
     public String artist;
-    public String desc;
     public String image;
     public String startTime;
     public String duration;
