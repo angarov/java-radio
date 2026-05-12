@@ -22,13 +22,13 @@ public class StationRepository {
     private static StationRepository instance;
     private final ApiClient apiClient;
     private final StationDao stationDao;
-    private final ExecutorService executor;
+    private final ExecutorService dbExecutor;
     private final Handler mainHandler;
 
     private StationRepository(Context context) {
         apiClient = ApiClient.getInstance();
         stationDao = RadioDatabase.getInstance(context).stationDao();
-        executor = Executors.newSingleThreadExecutor();
+        dbExecutor = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
     }
 
@@ -43,13 +43,13 @@ public class StationRepository {
         apiClient.getStations(url, new ApiCallback<StationsResponse>() {
             @Override
             public void onSuccess(StationsResponse response) {
-                executor.execute(() -> cacheStations(url, response.data));
+                dbExecutor.execute(() -> cacheStations(url, response.data));
                 callback.onSuccess(response);
             }
 
             @Override
             public void onFailure(Exception error) {
-                executor.execute(() -> {
+                dbExecutor.execute(() -> {
                     List<Station> cached = loadCachedStations(url);
                     mainHandler.post(() -> {
                         if (cached != null && !cached.isEmpty()) {

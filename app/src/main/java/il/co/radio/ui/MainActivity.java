@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
     private final BroadcastReceiver playbackReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            isPlaying = intent.getBooleanExtra(MediaService.EXTRA_IS_PLAYING, false);
-            boolean isBuffering = intent.getBooleanExtra(MediaService.EXTRA_IS_BUFFERING, false);
+            isPlaying = intent.getBooleanExtra(MediaService.EXTRA_PLAYING, false);
+            boolean isBuffering = intent.getBooleanExtra(MediaService.EXTRA_BUFFERING, false);
             updatePlayerUI(isPlaying, isBuffering);
         }
     };
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 playbackReceiver,
-                new IntentFilter(MediaService.BROADCAST_PLAYBACK_STATE));
+                new IntentFilter(MediaService.BROADCAST_STATE));
     }
 
     private void requestNotificationPermission() {
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements StationListFragme
                     return track;
                 }
             } catch (NumberFormatException e) {
+                // malformed EPG timestamp, skip
             }
         }
         return epgResponse.tracks.get(epgResponse.tracks.size() - 1);

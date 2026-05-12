@@ -13,23 +13,17 @@ public class Station {
     public List<String> voice;
     public List<String> info;
 
-    public String getStreamUrl() {
-        return feed != null && !feed.isEmpty() ? feed.get(0) : null;
+    private String first(List<String> list) {
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
+
+    public String getStreamUrl()    { return first(feed); }
+    public String getImageUrl()     { return first(img); }
+    public String getNowPlayingUrl(){ return first(nowplaying); }
+    public String getMainColor()    { return first(maincolor); }
 
     public String getName() {
-        return name != null && !name.isEmpty() ? name.get(0) : "";
-    }
-
-    public String getImageUrl() {
-        return img != null && !img.isEmpty() ? img.get(0) : null;
-    }
-
-    public String getNowPlayingUrl() {
-        return nowplaying != null && !nowplaying.isEmpty() ? nowplaying.get(0) : null;
-    }
-
-    public String getMainColor() {
-        return maincolor != null && !maincolor.isEmpty() ? maincolor.get(0) : null;
+        String n = first(name);
+        return n != null ? n : "";
     }
 }

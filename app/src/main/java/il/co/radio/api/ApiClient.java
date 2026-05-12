@@ -34,13 +34,8 @@ public class ApiClient {
     private static final int READ_TIMEOUT = 30_000;
 
     private static ApiClient instance;
-    private final ExecutorService executor;
-    private final Handler mainHandler;
-
-    private ApiClient() {
-        executor = Executors.newFixedThreadPool(2);
-        mainHandler = new Handler(Looper.getMainLooper());
-    }
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public static synchronized ApiClient getInstance() {
         if (instance == null) {

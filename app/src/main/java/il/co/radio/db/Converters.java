@@ -1,5 +1,7 @@
 package il.co.radio.db;
 
+import android.util.Log;
+
 import androidx.room.TypeConverter;
 
 import org.json.JSONArray;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Converters {
+
+    private static final String TAG = "Converters";
 
     @TypeConverter
     public static String fromStringList(List<String> list) {
@@ -27,6 +31,7 @@ public class Converters {
             }
             return list;
         } catch (JSONException e) {
+            Log.w(TAG, "toStringList failed: " + value);
             return new ArrayList<>();
         }
     }

@@ -29,9 +29,9 @@ public class MediaService extends Service {
     public static final String EXTRA_STREAM_URL = "stream_url";
     public static final String EXTRA_STATION_NAME = "station_name";
 
-    public static final String BROADCAST_PLAYBACK_STATE = "il.co.radio.PLAYBACK_STATE";
-    public static final String EXTRA_IS_PLAYING = "is_playing";
-    public static final String EXTRA_IS_BUFFERING = "is_buffering";
+    public static final String BROADCAST_STATE = "il.co.radio.PLAYBACK_STATE";
+    public static final String EXTRA_PLAYING = "is_playing";
+    public static final String EXTRA_BUFFERING = "is_buffering";
 
     private static final String CHANNEL_ID = "radio_playback";
     private static final int NOTIFICATION_ID = 1;
@@ -139,9 +139,9 @@ public class MediaService extends Service {
     }
 
     private void broadcastState() {
-        Intent intent = new Intent(BROADCAST_PLAYBACK_STATE);
-        intent.putExtra(EXTRA_IS_PLAYING, player.isPlaying());
-        intent.putExtra(EXTRA_IS_BUFFERING,
+        Intent intent = new Intent(BROADCAST_STATE);
+        intent.putExtra(EXTRA_PLAYING, player.isPlaying());
+        intent.putExtra(EXTRA_BUFFERING,
                 player.getPlaybackState() == Player.STATE_BUFFERING);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
